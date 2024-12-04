@@ -19,13 +19,7 @@ def place_order(menu):
     """
     # Set up order list. Order list will store a list of dictionaries for
     # menu item name, item price, and quantity ordered
-    order = []
-
-    # Get the menu items mapped to the menu numbers
-    menu_items = get_menu_items_dict(menu)
-
-    # Launch the store and present a greeting to the customer
-    print("Welcome to the Generic Take Out Restaurant.")
+    
 
     # TODO: Create a continuous while loop so customers can order multiple items
 
@@ -33,10 +27,10 @@ def place_order(menu):
 
 
         # Create a variable for the menu item number
-        i = 1
+
 
         # Print the menu header
-        print_menu_heading()
+  
 
         # TODO: Loop through the menu dictionary
         # TODO: Extract the food category and the options for each category
@@ -47,10 +41,10 @@ def place_order(menu):
                 # Print the menu item number, food category, meal, and price
                 # TODO: Only if you used different variable names
                 # TODO: Update the variable names in the following function
-                print_menu_line(i, food_category, meal, price)
+              
 
                 # Update the menu selection number
-                i += 1
+         
 
         # TODO: Ask customer to input menu item number
 
@@ -83,6 +77,86 @@ def place_order(menu):
 
 
     # TODO: Return the order list and the order total
+# Initialize the order list
+    order = []
+
+    # Map menu items to selection numbers
+    menu_items = get_menu_items_dict(menu)  # Helper function to create menu mapping
+
+    print("Welcome to the Generic Take Out Restaurant.")
+    while True:
+        # Display the menu
+        print("\nMenu:")
+        i = 1
+        for category, items in menu.items():
+            print(f"\n{category}:")
+            for meal, price in items.items():
+                print(f"  {i}. {meal} - ${price:.2f}")
+                menu_items[i] = (meal, price)
+                i += 1
+
+        # Ask the customer for their selection
+        try:
+            selection = int(input("\nEnter the number of the menu item you'd like to order: "))
+            if selection not in menu_items:
+                print("Invalid selection. Please choose a valid menu item number.")
+                continue
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+            continue
+
+        # Get the selected item
+        meal, price = menu_items[selection]
+
+        # Ask for quantity
+        try:
+            quantity = int(input(f"How many of {meal} would you like to order? "))
+            if quantity <= 0:
+                print("Quantity must be greater than zero.")
+                continue
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+            continue
+
+        # Update the order list
+        order.append({"item": meal, "price": price, "quantity": quantity})
+        print(f"{quantity} x {meal} added to your order.")
+
+        # Ask if the customer wants to order more
+        more = input("Would you like to order anything else? (y/n): ").strip().lower()
+        if more == 'n':
+            break
+
+    # Calculate the total
+    prices_list = [item["price"] * item["quantity"] for item in order]
+    order_total = round(sum(prices_list), 2)
+
+    print("\nThank you for your order!")
+    print("Receipt:")
+    for item in order:
+        print(f"{item['quantity']} x {item['item']} - ${item['price'] * item['quantity']:.2f}")
+    print(f"Total: ${order_total:.2f}")
+
+    return order, order_total
+
+
+def get_menu_items_dict(menu):
+    """
+    Creates a mapping of menu item numbers to their details.
+
+    Parameters:
+    menu (dict): The nested dictionary representing the menu.
+
+    Returns:
+    dict: A dictionary mapping menu item numbers to (meal, price).
+    """
+    menu_items = {}
+    index = 1
+    for category, items in menu.items():
+        for meal, price in items.items():
+            menu_items[index] = (meal, price)
+            index += 1
+    return menu_items
 
 
 def update_order(order, menu_selection, menu_items):
