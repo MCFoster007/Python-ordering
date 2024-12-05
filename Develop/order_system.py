@@ -34,81 +34,120 @@ def place_order(menu):
         # TODO: Ask the customer what they want to order
     while True:
         # Display the menu
+        i = 1  # Initialize menu item number
+        print_menu_heading()
         for category, items in menu.items():
-            print(f"{category}:")
             for meal, price in items.items():
-                print(f"{meal}: ${price:.2f}")
-
+                print_menu_line(i, category, meal, price)
+                i += 1
         # Ask the customer what they want to order
-        meal = input("What would you like to order? (Type 'quit' to finish ordering)\n")
-
-        if meal.lower() == 'quit':
-            break
-
-        # Check if the meal is in the menu
-        if meal in menu_items:
+        try:
+            selection = input(
+                "Please enter the item number you'd like to order (or type 'finish' to finish):\n"
+            )
+            if selection.lower() == 'finish':
+                break
+            
+            selection = int(selection)  # Convert input to integer
+            if selection not in menu_items:
+                print("Invalid item number. Please try again.")
+                continue
+            
+            # Retrieve the selected item
+            selected_item = menu_items[selection]
+            meal = selected_item["Item name"]
+            price = selected_item["Price"]
+            
+            # Ask for quantity
             quantity = int(input(f"How many {meal} would you like to order? "))
-            order.append({"item": meal, "price": menu_items[meal], "quantity": quantity})
-        else:
-            print("Sorry, that item is not on the menu.")
+            if quantity <= 0:
+                print("Invalid quantity. Please try again.")
+                continue
+            
+            # Update the order list
+            order.append({"item": meal, "price": price, "quantity": quantity})
+            print(f"Added {quantity} x {meal} to your order.")
+        except ValueError:
+            print("Invalid input. Please enter a valid menu item number or 'finish' to quit.")
 
     # Calculate total price
-    order_total = round(sum([item['price'] * item['quantity'] for item in order]), 2)
-
+   # Calculate the total price
+    prices_list = [item['price'] * item['quantity'] for item in order]
+    order_total = round(sum(prices_list), 2)
+    
+    # Thank the customer
+    print("\nThank you for your order!")
+    
     return order, order_total
-        #******review codelines 60-64 TODO: Loop through the menu dictionary
-# Initialize menu item number
-# i = 1
-
-# # Loop through the menu dictionary
-# for category, items in menu.items():
-#     print(f"{category}:")  # Print the category name
-
-#     # Loop through the items within each category
-#     for meal, price in items.items():
-        # Print each menu line using the provided function
-    print_menu_line(i, category, meal, price)  # Use category as `food_category`, meal, and price
+ # Helper functions
+def print_menu_heading():
+    """Prints the menu heading."""
+    print("--------------------------------------------------")
+    print("Item # | Item name                        | Price")
+    print("-------|----------------------------------|-------")
 
         # Increment the menu item number
     
- 
 
-
-i = 1
         # TODO: Extract the food category and the options for each category
 
             # TODO: Loop through the options for each food category
-for category, items in menu.items():
-    print(f"{category}:")  
-            # TODO: Extract the meal and the price for each option
-for meal, price in items.items():
+
+#             # TODO: Extract the meal and the price for each option
+
                 # Print the menu item number, food category, meal, and price
                 # TODO: Only if you used different variable names
                 # TODO: Update the variable names in the following function
-     print_menu_line(i, category, meal, price)
+def print_menu_line(i, category, meal, price):
+    """Prints a formatted menu line."""
+    num_item_spaces = 32 - len(category + meal) - 3
+    item_spaces = " " * num_item_spaces
+    i_spaces = " " * (6 if i < 10 else 5)
+    print(f"{i}{i_spaces}| {category} - {meal}{item_spaces} | ${price:.2f}")
 
-    # Update the menu selection number
-i += 1
-def print_menu_line(index, food_category, meal, price):
+
+def get_menu_items_dict(menu):
     """
-    Prints a line of the menu.
+    Creates a dictionary of menu items mapped to menu item numbers.
 
     Parameters:
-    index (int): The menu item number.
-    food_category (str): The category of the food item.
-    meal (str): The name of the meal item.
-    price (float): The price of the meal item.
-    """
-    # Print the menu item number, food category, meal, and price
-    num_item_spaces = 32 - len(food_category + meal) - 3
-    item_spaces = " " * num_item_spaces
-    if index < 10:
-        i_spaces = " " * 6
-    else:
-        i_spaces = " " * 5
-    print(f"{index}{i_spaces}| {food_category} - {meal}{item_spaces} | ${price:.2f}")
+    menu (dictionary): A nested dictionary of menu items and prices.
 
-# start here*******
+    Returns:
+    menu_items (dictionary): A dictionary with menu item numbers as keys.
+    """
+    menu_items = {}
+    i = 1
+    for category, items in menu.items():
+        for meal, price in items.items():
+            menu_items[i] = {"Item name": f"{category} - {meal}", "Price": price}
+            i += 1
+    return menu_items
+
+
+# Example menu
+menu = {
+    "Cake": {"Chocolate Cake": 5.99, "Vanilla Cake": 4.99},
+    "Ice Cream": {"Strawberry": 3.49, "Chocolate": 3.99},
+    "Beverages": {"Coffee": 2.99, "Tea": 1.99}
+}
+
+# Run the program
+if __name__ == "__main__":
+    receipt, total_price = place_order(menu)
+    
+def print_receipt_line(item_name, price, quantity):
+    """
+    Prints a line in the receipt for each item ordered.
+
+    Parameters:
+    item_name (str): The name of the item.
+    price (float): The price of the item.
+    quantity (int): The quantity of the item ordered.
+    """
+    line = f"{item_name}: ${price:.2f} x {quantity}"
+    print(line)
+# start here******* 
         # TODO: Ask customer to input menu item number
 
 
@@ -198,15 +237,15 @@ def print_itemized_receipt(receipt):
                     and quantity ordered.
     """
     # Uncomment the following line if you need to check the structure of the receipt
-    #print(receipt)
+    print(receipt)
 
     # TODO: Loop through the items in the customer's receipt
 
-        # TODO Store the dictionary items as variables
+    #     TODO Store the dictionary items as variables
 
 
-        # TODO: Print the receipt line using the print_receipt_line function
-        # TODO: Send the item name, price, and quantity as separate arguments
+    #     TODO: Print the receipt line using the print_receipt_line function
+    #     TODO: Send the item name, price, and quantity as separate arguments
 
 
 ##################################################
