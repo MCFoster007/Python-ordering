@@ -1,3 +1,5 @@
+import order_system
+
 def place_order(menu):
     """
     Displays a restaurant menu, asks customers for their order, then returns
@@ -147,38 +149,61 @@ def print_receipt_line(item_name, price, quantity):
     """
     line = f"{item_name}: ${price:.2f} x {quantity}"
     print(line)
-# start here******* 
-        # TODO: Ask customer to input menu item number
+# tested above works*****
+#DONOT WORK BELOW LINES 154 TO 204***
+# def place_order(order, menu_selection, menu_items):
+
+#         # TODO: Ask customer to input menu item number
+# selection = input("Enter the item number you'd like to order (or 'n' to finish): ").lower()
+
+#         # TODO: Update the order list using the update_order function
+#         # TODO: Send the order list, menu selection, and menu items as arguments
+# selected_item = menu_items[selection]
+# meal = selected_item["Item name"]
+# price = selected_item["Price"] 
+# order.append({"item": meal, "price": price, "quantity": quantity})
+ 
+
+#         # TODO: Ask the customer if they would like to order anything else
+#         # TODO: Let the customer know if they should type 'n' or 'N' to quit
+# if selection == "n":
+#     # break
+#  selection = input("Enter the item number you'd like to order (or 'n' to finish): ").lower()
+
+#         # TODO: Write a conditional statement that checks the user's input
+#         # TODO: The conditional statement should check for 'n' or 'N'
+# if not selection.isdigit() or int(selection) not in menu_items:
+#     print("Invalid input. Please select a valid menu item number.")
+#     # continue
+
+#             # TODO: Write a print statement that thanks the customer for their order
+# print("\nThank you for your order! Here's your receipt:")
 
 
-        # TODO: Update the order list using the update_order function
-        # TODO: Send the order list, menu selection, and menu items as arguments
+#             # TODO: Use list comprehension to create a list called prices_list,
+#             # TODO: which contains the total prices for each item in the order list:
+#             # TODO: The total price for each item should multiply the price by quantity
+# prices_list = [item["price"] * item["quantity"] for item in order]
 
 
-        # TODO: Ask the customer if they would like to order anything else
-        # TODO: Let the customer know if they should type 'n' or 'N' to quit
+#             # TODO: Create an order_total from the prices list using sum()
+#             # TODO: Round the prices to 2 decimal places.
+# order_total = round(sum(prices_list), 2)
 
 
-        # TODO: Write a conditional statement that checks the user's input
-        # TODO: The conditional statement should check for 'n' or 'N'
+#             # TODO: Exit the ordering loop
+# if selection == "n":
+    # break
 
-            # TODO: Write a print statement that thanks the customer for their order
-
-
-            # TODO: Use list comprehension to create a list called prices_list,
-            # TODO: which contains the total prices for each item in the order list:
-            # TODO: The total price for each item should multiply the price by quantity
-
-
-            # TODO: Create an order_total from the prices list using sum()
-            # TODO: Round the prices to 2 decimal places.
-
-
-            # TODO: Exit the ordering loop
             # TODO: Either use a break statement or set the condition to False
 
 
     # TODO: Return the order list and the order total
+                  
+#  return list, order_total
+
+
+  
 
 def update_order(order, menu_selection, menu_items):
      """
@@ -242,7 +267,14 @@ def print_itemized_receipt(receipt):
     # TODO: Loop through the items in the customer's receipt
 
     #     TODO Store the dictionary items as variables
+    for item in receipt:
+        # Store the dictionary items as variables
+        item_name = item["item"]
+        price = item["price"]
+        quantity = item["quantity"]
 
+        # Print the receipt line using the print_receipt_line function
+        print_receipt_line(item_name, price, quantity)
 
     #     TODO: Print the receipt line using the print_receipt_line function
     #     TODO: Send the item name, price, and quantity as separate arguments
